@@ -22,6 +22,26 @@ git clone --depth=1 https://github.com/sirpdboy/luci-app-ddns-go package/ddnsgo
 git clone -b v5-lua --single-branch --depth 1 https://github.com/sbwml/luci-app-mosdns package/mosdns
 git clone -b lua --single-branch --depth 1 https://github.com/sbwml/luci-app-alist package/alist
 git clone --depth=1 https://github.com/gdy666/luci-app-lucky.git package/lucky
+# ============ 添加 luci-app-openlist2 ============
+echo "正在添加 luci-app-openlist2 插件..."
+
+# 删除可能已存在的旧版本
+rm -rf package/luci-app-openlist2
+rm -rf feeds/luci/applications/luci-app-openlist2
+
+# 克隆插件
+git clone https://github.com/sbwml/luci-app-openlist2.git package/luci-app-openlist2
+
+# 进入目录并运行 install.sh（关键：自动下载 openlist 数据）
+(
+  cd package/luci-app-openlist2
+  ./install.sh
+)
+
+# 将插件加入 feeds（确保编译系统识别）
+echo "src-link openlist2 $PWD/package/luci-app-openlist2" >> feeds.conf.default
+
+# ============ 以上是新增部分 ============
 #添加自定义的软件包源
 #git_sparse_clone main https://github.com/kiddin9/kwrt-packages ddns-go
 #git_sparse_clone main https://github.com/kiddin9/kwrt-packages luci-app-ddns-go
@@ -37,7 +57,7 @@ rm -rf feeds/luci/applications/luci-app-mosdns
 #rm -rf feeds/luci/applications/luci-app-design-config
 
 # Default IP
-sed -i 's/192.168.1.1/192.168.2.2/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.50.200/g' package/base-files/files/bin/config_generate
 
 #修改默认时间格式
 sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S %A")/g' $(find ./package/*/autocore/files/ -type f -name "index.htm")
