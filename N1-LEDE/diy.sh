@@ -50,31 +50,5 @@ rm -rf feeds/luci/applications/luci-app-mosdns
 # 你已设置，保留即可
 sed -i 's/192.168.1.1/192.168.50.200/g' package/base-files/files/bin/config_generate
 
-# ============ ⭐ 关键：禁用 DHCP 服务（旁路由必须）⭐ ============
-echo "禁用 LAN 口 DHCP 服务，避免与主路由 192.168.50.1 冲突"
-cat > package/base-files/files/etc/config/dhcp <<EOF
-config dnsmasq
-    option domainneeded '1'
-    option boguspriv '1'
-    option filterwin2k '1'
-    option localise_queries '1'
-    option rebind_protection '1'
-    option rebind_localhost '1'
-    option local '/lan/'
-    option domain 'lan'
-    option expandhosts '1'
-    option nonegcache '0'
-    option authoritative '1'
-    option readethers '1'
-    option leasefile '/tmp/dhcp.leases'
-    option resolvfile '/tmp/resolv.conf.auto'
-    option nonwildcard '1'
-    option localservice '1'
-
-config dhcp 'lan'
-    option interface 'lan'
-    option ignore '1'
-EOF
-
 # ============ 修改默认时间格式 ============
 sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M:%S %A")/g' $(find ./package/*/autocore/files/ -type f -name "index.htm")
