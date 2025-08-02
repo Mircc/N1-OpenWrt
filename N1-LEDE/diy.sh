@@ -24,24 +24,11 @@ git clone -b lua --single-branch --depth 1 https://github.com/sbwml/luci-app-ali
 git clone --depth=1 https://github.com/gdy666/luci-app-lucky.git package/lucky
 
 # ============ 添加 luci-app-openlist2 ============
-echo "正在添加 luci-app-openlist2 插件..."
 
-# 删除可能已存在的旧版本
-rm -rf package/luci-app-openlist2
-rm -rf feeds/luci/applications/luci-app-openlist2
+git clone --depth=1 https://github.com/sbwml/luci-app-openlist2.git package/luci-app-openlist2
 
-# 克隆插件
-git clone https://github.com/sbwml/luci-app-openlist2.git package/luci-app-openlist2
-
-# 进入目录并运行 install.sh（关键：自动下载 openlist 数据）
-(
-  cd package/luci-app-openlist2
-  ./install.sh
-)
-
-# 将插件加入 feeds（确保编译系统识别）
-echo "src-link openlist2 $PWD/package/luci-app-openlist2" >> feeds.conf.default
-
+# ============ 添加 luci-app-openclash ============
+git clone --depth=1 https://github.com/vernesong/OpenClash.git package/OpenClash
 # ============ 以上是新增部分 ============
 
 #添加自定义的软件包源
